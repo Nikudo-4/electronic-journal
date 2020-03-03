@@ -46,8 +46,8 @@
            >
           {{objectDay.name}}{{objectDay.date}}
           <q-separator inset />
-          <q-card-section style="opacity: 0.9" v-for="subject in subjects" :key="subject.name">
-            {{subject.name}}: {{subject.assessment}}
+          <q-card-section style="opacity: 0.9" v-for="subject in subjects" :key="subject.title">
+            {{subject.id}}: {{subject.title}}
           </q-card-section>
         </div>
       </q-card-section>
@@ -73,6 +73,7 @@
 <script>
 import moment, { locale } from 'moment'
 import {mapGetters, mapActions , mapMutations} from 'vuex'
+import Axios from 'axios'
 
 
 export default {
@@ -95,24 +96,23 @@ export default {
       }
     },
       objectMonth(){
-        let a = state.date
+        let a = this.$store.state.date
         let f = moment(a).daysInMonth();
         return f
       },
-
-    ...mapGetters(["formatBtn","objectDays","subjects","objectMonth1"]),
-
-
-
+    ...mapGetters(["formatBtn","objectDays","subjects"]),
     // не пойму как привязать текущий день к нужному ему массиву рассписания
   },
+  mounted(){
+    this.giveSubjects()
+  },
   methods:{
-    ...mapActions(['updateDate']),
+    ...mapActions(['updateDate', 'giveSubjects']),
     ...mapMutations(["plusWeek","minusWeek","handleSwipeR","handleSwipeL","handleSwipeWeekR","handleSwipeWeekL"]), 
 
       handleSwipeT(){
         return this.vision=!this.vision
-      }
+      },
     },
   
 }

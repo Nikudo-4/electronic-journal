@@ -5,14 +5,35 @@ export default {
         async updateDate({commit}){
             commit('updateDate', date)
         },
-        async loginUser(){
-          fetch('')
+        async giveChild(ctx, result){
+          try {
+              const res = await fetch("http://193.228.162.185:9072/api/app/schoolchild/"+result);
+              const dataChild = await res.json();
+              ctx.commit('updateData', dataChild);
+          } catch (err) {
+              alert(err)
+            }
+        },
+        async giveSubjects(ctx){
+          try {
+            const res1 = await fetch("http://193.228.162.185:9072/api/app/subjects/all-subjects");
+            const subjects = await res1.json();
+            ctx.commit('updateSubj', subjects);
+          } catch (err) {
+            alert(err)
+            }
         }
     },
-    
+    // f80686d0-59a0-11ea-970b-872030887c49
     mutations: {
         updateDate(state, date){
             return state.date = date
+        },
+        updateData(state, dataChild){
+          return state.dataChild = dataChild
+        },
+        updateSubj(state, subjects){
+          return state.subjects = subjects
         },
         plusWeek(state){
           let t = state.date
@@ -48,29 +69,31 @@ export default {
    },
 
     state: {
+        dataChild:{},
         date: new Date(Date.now()),
-        subjects: [{
-            name: 'Алгебра',
-            assessment:[ 5 , 4 , 3 , 2, 2, 2,]
-          }, {
-            name: 'Русский язык',
-            assessment:[ 5 , 4 , 3 , 3]
-          }, {
-            name: 'Иностранный',
-            assessment:[5 , 4 , 3 , 2 ]
-          }, {
-            name: 'География',
-            assessment:[4 , 4 , 3 , 2 ]
-          }, {
-            name: 'История',
-            assessment:[5 , 4 , 3 , 2 ]
-          }, {
-            name: 'Физика',
-            assessment:[5 , 4 , 3 , 2 ]
-          }, {
-            name: 'Физкультура',
-            assessment:[5 , 4 , 3 , 2 ]
-        }],
+        subjects:{}
+        // subjects: [{
+        //     name: 'Алгебра',
+        //     assessment:[ 5 , 4 , 3 , 2, 2, 2,]
+        //   }, {
+        //     name: 'Русский язык',
+        //     assessment:[ 5 , 4 , 3 , 3]
+        //   }, {
+        //     name: 'Иностранный',
+        //     assessment:[5 , 4 , 3 , 2 ]
+        //   }, {
+        //     name: 'География',
+        //     assessment:[4 , 4 , 3 , 2 ]
+        //   }, {
+        //     name: 'История',
+        //     assessment:[5 , 4 , 3 , 2 ]
+        //   }, {
+        //     name: 'Физика',
+        //     assessment:[5 , 4 , 3 , 2 ]
+        //   }, {
+        //     name: 'Физкультура',
+        //     assessment:[5 , 4 , 3 , 2 ]
+        // }],
     },
     
     getters: {
@@ -81,6 +104,9 @@ export default {
           let endw = moment(n).endOf('isoWeeks');//конец недели
           let stroka = `${moment(startw).format('DD')}-${moment(endw).format('DD')} ${moment(state.date).locale('ru').format('MMMM YYYY')}`
           return stroka
+       },
+       dataChild(state){
+        return state.dataChild
        },
        subjects(state){
         return state.subjects
@@ -96,8 +122,8 @@ export default {
           { id:6, name:"Суббота  " , date: moment(state.date).isoWeekday(6).locale('ru').format('D MMM')}
           ]}
       },
-      objectMonth1(state) {
-        return this.state.date 
-      }
+      nameChildren(state){
+        return state.dataChild.name
+       },
     }
 }

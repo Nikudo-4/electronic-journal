@@ -11,15 +11,15 @@
         </tr>
       </thead>
       <tbody >
-        <tr v-for="(subject, index) in subjects" :key="index">
+        <tr v-for="(subject,id) in subjects" :key="id">
           <td class="text-left" 
           >{{subject.name}}</td>
+          <!-- <td class="text-right">{{subject.assessment}}</td>
           <td class="text-right">{{subject.assessment}}</td>
           <td class="text-right">{{subject.assessment}}</td>
           <td class="text-right">{{subject.assessment}}</td>
           <td class="text-right">{{subject.assessment}}</td>
-          <td class="text-right">{{subject.assessment}}</td>
-          <td class="text-right">{{subject.assessment}}</td>
+          <td class="text-right">{{subject.assessment}}</td> -->
         </tr>
       </tbody>
     </q-markup-table>
