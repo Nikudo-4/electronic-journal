@@ -4,8 +4,9 @@
     <span >Школа № 30</span>
     <div>
       <q-btn @click="scan()">go scan</q-btn>
-      <div>{{dataChild}}</div>
-      <div>{{info}}</div>
+      <q-btn @click="info1()">INFO</q-btn>
+      <div>DATA:{{dataChild}}</div>
+      <div>INFO:{{info}}</div>
       <div>
         <!-- <q-btn @decode="onDecode" > dsdfsdsfd</q-btn> -->
     <qrcode-stream @decode="onDecode"></qrcode-stream>
@@ -16,6 +17,7 @@
 </template>
 
 <script>
+import {LocalStorage} from 'quasar'
 import {mapGetters, mapActions , mapMutations} from 'vuex'
 import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from 'vue-qrcode-reader'
 
@@ -23,7 +25,7 @@ import axios from 'axios'
 export default {
 data(){
   return{
-    info:null
+    info:''
   }
 },
 components: {
@@ -34,20 +36,22 @@ components: {
 computed:{
   ...mapGetters(['dataChild'])
 },
- mounted() {
-    // axios
-    //   .get('http://193.228.162.185:9072/api/app/schoolchild/f80686d0-59a0-11ea-970b-872030887c49')
-    //   .then(response => (this.info = response));
-    // this.giveChild()
-  },
+
 methods:{
   ...mapActions(['giveChild']),
   async scan(){
     cordova.plugins.barcodeScanner.scan(
         function(result){
-          this.giveChild(result.text)
+          alert(result.text)
+          this.giveChild(result)
         }
    );
+  },
+  info1(){
+  // localStorage.getItem('store')
+    let value = localStorage.getItem('store')
+    this.info = value  
+    alert(this.info)
   },
   async onDecode (decodedString) {
     alert(decodedString)

@@ -245,6 +245,7 @@ export default {
         whantDelete: false
     }
   },
+
     computed:{
       btntitle() {
         let currentPath = this.$route.fullPath

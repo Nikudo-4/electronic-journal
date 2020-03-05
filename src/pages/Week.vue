@@ -7,7 +7,7 @@
       </div>
 
       <div class="col-10" id="butt">
-        <q-btn class="dateFond" @click="()=>{vision = !vision;}" >
+        <q-btn no-caps class="dateFond" @click="()=>{vision = !vision;}" >
           {{formatBtn}}
         </q-btn>
       </div>

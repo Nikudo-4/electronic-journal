@@ -1,5 +1,10 @@
 import moment, { locale } from 'moment'
+import { LocalStorage} from 'quasar'
+import {version} from './../../../package.json';
+
 export default {
+
+
 
     actions: {
         async updateDate({commit}){
@@ -7,7 +12,7 @@ export default {
         },
         async giveChild(ctx, result){
           try {
-              const res = await fetch("http://193.228.162.185:9072/api/app/schoolchild/"+result);
+              const res = await fetch("http://193.228.162.185:9072/api/app/schoolchild/"+result.text);
               const dataChild = await res.json();
               ctx.commit('updateData', dataChild);
           } catch (err) {
@@ -24,8 +29,24 @@ export default {
             }
         }
     },
-    // f80686d0-59a0-11ea-970b-872030887c49
+
     mutations: {
+      initialiseStore(state) {
+        // Check if the store exists
+        if(localStorage.getItem('store')) {
+          let store = JSON.parse(localStorage.getItem('store'));
+          
+          // Check the version stored against current. If different, don't
+          // load the cached version
+          if(store.version == version) {
+            this.replaceState(
+              Object.assign(state, store)
+            );
+          } else {
+            state.version = version;
+          }
+        }
+      },
         updateDate(state, date){
             return state.date = date
         },
@@ -67,33 +88,11 @@ export default {
 
         },
    },
-
     state: {
         dataChild:{},
         date: new Date(Date.now()),
-        subjects:{}
-        // subjects: [{
-        //     name: 'Алгебра',
-        //     assessment:[ 5 , 4 , 3 , 2, 2, 2,]
-        //   }, {
-        //     name: 'Русский язык',
-        //     assessment:[ 5 , 4 , 3 , 3]
-        //   }, {
-        //     name: 'Иностранный',
-        //     assessment:[5 , 4 , 3 , 2 ]
-        //   }, {
-        //     name: 'География',
-        //     assessment:[4 , 4 , 3 , 2 ]
-        //   }, {
-        //     name: 'История',
-        //     assessment:[5 , 4 , 3 , 2 ]
-        //   }, {
-        //     name: 'Физика',
-        //     assessment:[5 , 4 , 3 , 2 ]
-        //   }, {
-        //     name: 'Физкультура',
-        //     assessment:[5 , 4 , 3 , 2 ]
-        // }],
+        subjects:{},
+        version: '',
     },
     
     getters: {
@@ -126,4 +125,6 @@ export default {
         return state.dataChild.name
        },
     }
+
+  
 }
