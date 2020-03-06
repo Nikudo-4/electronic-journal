@@ -45,11 +45,12 @@
           text-align:center;"
            >
           {{objectDay.name}}{{objectDay.date}}
+          </div>
           <q-separator inset />
-          <q-card-section style="opacity: 0.9" v-for="subject in subjects" :key="subject.title">
+          <q-card-section class="text-black" style="opacity: 0.9;   text-align:center; " v-for="subject in subjects" :key="subject.title">
             {{subject.id}}: {{subject.title}}
           </q-card-section>
-        </div>
+        
       </q-card-section>
     </q-card>
   </div>

@@ -29,9 +29,13 @@ export default function (/* { ssrContext } */) {
   Store.subscribe((mutation, state) => {
     // Store the state object as a JSON string
     let storeInit =  JSON.stringify(state)
+
     localStorage.setItem('store', storeInit);
   });
-  
+  //   Store.subscribe((mutation, state) => {
+  //  
+  //     state.allChild
+  // });
 
   return Store
 }

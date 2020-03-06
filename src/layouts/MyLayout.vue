@@ -55,13 +55,13 @@
           aria-label="Menu"
         />
       <q-list>
-        <div class="q-col-gutter-md row justify-center">
-          <div class="col-4">
+        <div class="q-col-gutter-md row justify-center"  >
+          <div class="col-4" v-for="(nameAllArrChildren, index) in nameAllArrChildrens" :key="index">
             <q-img
             src="https://placeimg.com/500/300/nature"
             :ratio="4/3"
             />
-            <span>{{nameChildren}}</span>
+            <span>{{nameAllArrChildren.name}}</span>
           </div>
         <div class="col-4" >
           <q-btn to="/">+</q-btn>
@@ -140,14 +140,14 @@
             <q-card-section  class="q-pt-none">
               <q-list style="width:240px" >
                 <div class="q-col-gutter-md row justify-center">
-                  <div class="col-12" style="text-align:center" >
+                  <div class="col-12" style="text-align:center" v-for="(nameAllArrChildren, index) in nameAllArrChildrens" :key="index" >
                     <q-img
                     src="https://placeimg.com/500/300/nature"
                     :ratio="4/3"
                     />
-                    <span>{{nameChildren}}</span>
+                    <span>{{nameAllArrChildren.name}}</span>
                     <br>
-                    <q-btn @click="deleteBtn" style="width:100px" >Удалить</q-btn>
+                    <q-btn @click="deleteItem(index), asdasd()" style="width:100px" >Удалить</q-btn>
                   </div>
                 </div>
               </q-list>
@@ -256,9 +256,10 @@ export default {
       sendBtn(){
         if (this.name.length >= 3 && this.text.length >=5) return true
       },
-    ...mapGetters(['nameChildren'])
+    ...mapGetters(['nameChildren','nameAllArrChildrens'])
     },
      methods: {
+       ...mapActions(['deleteItem']),
       onItemClick1 () {
        console.log('Clicked on an Item1')
       },
@@ -279,13 +280,12 @@ export default {
           return this.w = false 
           }
       },
-      deleteBtn () {
-      this.$q.notify({
-        message: '<span style="color: white">Удалено</span>',
-        color: 'primary',
-        html: true
-      })
-
+      asdasd(){
+        this.$q.notify({
+            message: '<span style="color: white">Удалено</span>',
+            color: 'primary',
+            html: true
+          })
       }
     }
 }

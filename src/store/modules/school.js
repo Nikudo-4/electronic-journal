@@ -1,5 +1,5 @@
 import moment, { locale } from 'moment'
-import { LocalStorage} from 'quasar'
+
 import {version} from './../../../package.json';
 
 export default {
@@ -7,12 +7,15 @@ export default {
 
 
     actions: {
-        async updateDate({commit}){
-            commit('updateDate', date)
+      deleteItem ({commit}, id) {             
+            commit('deleteItem', id)
         },
-        async giveChild(ctx, result){
+        async updateDate({commit}){
+            commit('updateDate', index)
+        },
+        async giveChild(ctx, decodedString){
           try {
-              const res = await fetch("http://193.228.162.185:9072/api/app/schoolchild/"+result.text);
+              const res = await fetch("http://193.228.162.185:9072/api/app/schoolchild/"+decodedString);
               const dataChild = await res.json();
               ctx.commit('updateData', dataChild);
           } catch (err) {
@@ -27,6 +30,9 @@ export default {
           } catch (err) {
             alert(err)
             }
+        },
+        updateData({commit}){
+          commit('updateData', )
         }
     },
 
@@ -35,7 +41,6 @@ export default {
         // Check if the store exists
         if(localStorage.getItem('store')) {
           let store = JSON.parse(localStorage.getItem('store'));
-          
           // Check the version stored against current. If different, don't
           // load the cached version
           if(store.version == version) {
@@ -51,10 +56,25 @@ export default {
             return state.date = date
         },
         updateData(state, dataChild){
-          return state.dataChild = dataChild
+          if(state.allChildren.length == 0) {
+            state.currentChild = dataChild
+            return state.allChildren.push(dataChild)
+          } 
+          const index = state.allChildren.findIndex(element => element.id === dataChild.id)
+          if (index<0){
+            state.currentChild = dataChild
+            return state.allChildren = [...state.allChildren, dataChild] 
+          }
         },
+        deleteItem(state, index){
+        //  let index = state.allChildren.findIndex(el => el.id == id)
+          state.allChildren.splice(index, 1)
+         },
         updateSubj(state, subjects){
           return state.subjects = subjects
+        },
+        addQR(state, qrCodes){
+          return state.qrCodes = qrCodes
         },
         plusWeek(state){
           let t = state.date
@@ -89,10 +109,12 @@ export default {
         },
    },
     state: {
-        dataChild:{},
+        currentChild:{},
+        allChildren:[],
         date: new Date(Date.now()),
         subjects:{},
         version: '',
+        qrCodes:[]
     },
     
     getters: {
@@ -122,7 +144,11 @@ export default {
           ]}
       },
       nameChildren(state){
-        return state.dataChild.name
+        return state.currentChild.name
+       },
+       
+      nameAllArrChildrens(state){
+        return state.allChildren
        },
     }
 
