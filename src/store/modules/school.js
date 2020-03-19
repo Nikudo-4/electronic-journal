@@ -1,4 +1,5 @@
 import moment, { locale } from 'moment'
+import { LocalStorage } from 'quasar'
 
 import {version} from './../../../package.json';
 
@@ -7,17 +8,38 @@ export default {
 
 
     actions: {
-      deleteItem ({commit}, id) {             
+        deleteItem ({commit}, id) {             
             commit('deleteItem', id)
         },
+        currentChild ({commit}, index) {             
+          commit('currentChildSort', index)
+        },
         async updateDate({commit}){
+
             commit('updateDate', index)
+        },
+        async giveChild1(ctx, resultT){
+          try {
+            alert("Я")
+              const res = await fetch("http://193.228.162.185:9072/api/app/schoolchild/"+resultT);
+              alert(res)
+              const dataChild = await res.json();
+               ctx.commit('updateData', dataChild);
+               ctx.commit('currentChild', dataChild);
+               ctx.commit('addQR',decodedString);
+          } catch (err) {
+              alert(err)
+            }
         },
         async giveChild(ctx, decodedString){
           try {
+            alert("Я")
               const res = await fetch("http://193.228.162.185:9072/api/app/schoolchild/"+decodedString);
+              alert(res)
               const dataChild = await res.json();
-              ctx.commit('updateData', dataChild);
+               ctx.commit('updateData', dataChild);
+               ctx.commit('currentChild', dataChild);
+               ctx.commit('addQR',decodedString);
           } catch (err) {
               alert(err)
             }
@@ -33,14 +55,18 @@ export default {
         },
         updateData({commit}){
           commit('updateData', )
+        },
+        addQR({commit}){
+          commit('updateData', )
         }
     },
 
     mutations: {
+      //local storege
       initialiseStore(state) {
         // Check if the store exists
-        if(localStorage.getItem('store')) {
-          let store = JSON.parse(localStorage.getItem('store'));
+        if(LocalStorage.getItem('store')) {
+          let store = JSON.parse(LocalStorage.getItem('store'));
           // Check the version stored against current. If different, don't
           // load the cached version
           if(store.version == version) {
@@ -52,6 +78,9 @@ export default {
           }
         }
       },
+        addQR(state, decodedString){
+        return state.qrCodes = decodedString
+        },
         updateDate(state, date){
             return state.date = date
         },
@@ -67,15 +96,30 @@ export default {
           }
         },
         deleteItem(state, index){
-        //  let index = state.allChildren.findIndex(el => el.id == id)
           state.allChildren.splice(index, 1)
          },
         updateSubj(state, subjects){
           return state.subjects = subjects
         },
-        addQR(state, qrCodes){
-          return state.qrCodes = qrCodes
+        // addQR(state, qrCodes){
+        //   return state.qrCodes = qrCodes
+        // },
+        currentChild(state, dataChild){
+          return state.currentChild = dataChild
         },
+        currentChildSort(state, index){
+          // let currEll = state.allChildren.findIndex( el => el.id == index.id)
+          // if(currEll< 0) 
+          return state.currentChild = index
+        },
+        // currentChildSort(state, index){
+        //   state.allChildren.forEach(element =>{
+        //     if(element.index == ){
+        //       state.currentChild = null
+        //       return state.currentChild = currentValue
+        //     }
+        //   });
+        // },
         plusWeek(state){
           let t = state.date
           t = moment(t).add(1,'isoWeeks')
@@ -126,8 +170,8 @@ export default {
           let stroka = `${moment(startw).format('DD')}-${moment(endw).format('DD')} ${moment(state.date).locale('ru').format('MMMM YYYY')}`
           return stroka
        },
-       dataChild(state){
-        return state.dataChild
+       currentChild(state){
+        return state.currentChild
        },
        subjects(state){
         return state.subjects
@@ -147,7 +191,7 @@ export default {
         return state.currentChild.name
        },
        
-      nameAllArrChildrens(state){
+      allArrChildren(state){
         return state.allChildren
        },
     }

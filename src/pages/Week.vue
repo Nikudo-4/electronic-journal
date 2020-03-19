@@ -6,7 +6,7 @@
         dense @click="minusWeek()" />
       </div>
 
-      <div class="col-10" id="butt">
+      <div class="col-10 q-pb-sm" id="butt">
         <q-btn no-caps class="dateFond" @click="()=>{vision = !vision;}" >
           {{formatBtn}}
         </q-btn>
@@ -32,23 +32,24 @@
         
     </div>
     <q-card
-      class="q-mt-sm  my-card"
+      class="q-ma-sm  my-card"
       bordered
+      flat
     >
       <q-card-section class="text-white"
        v-for="(objectDay, index) in objectDays.date" :key="index"
         v-touch-swipe.mouse.right="handleSwipeWeekR"
         v-touch-swipe.mouse.left="handleSwipeWeekL"
         >
-        <div class="q-pt-md text-h6"
+        <div class="q-pa-sm text-h6"
          style="background: radial-gradient(circle, #35a2ff 0%, #014a88 100%); 
           text-align:center;"
            >
           {{objectDay.name}}{{objectDay.date}}
           </div>
           <q-separator inset />
-          <q-card-section class="text-black" style="opacity: 0.9;   text-align:center; " v-for="subject in subjects" :key="subject.title">
-            {{subject.id}}: {{subject.title}}
+          <q-card-section class="text-black" style="opacity: 0.9;   " v-for="subject in subjects" :key="subject.title">
+             {{subject.title}} : {{subject.id}}
           </q-card-section>
         
       </q-card-section>

@@ -54,14 +54,15 @@
           icon="menu"
           aria-label="Menu"
         />
-      <q-list>
-        <div class="q-col-gutter-md row justify-center"  >
-          <div class="col-4" v-for="(nameAllArrChildren, index) in nameAllArrChildrens" :key="index">
+      <q-list clickable>
+        <div class="q-col-gutter-md row justify-center"  style="text-align:center;" >
+          <div class="col-4" v-for="(allArrChild, index) in allArrChildren" :key="index"
+           @click="currentChild(allArrChild)" clickable v-close-popup >
             <q-img
             src="https://placeimg.com/500/300/nature"
             :ratio="4/3"
             />
-            <span>{{nameAllArrChildren.name}}</span>
+            <span >{{allArrChild.name}}</span>
           </div>
         <div class="col-4" >
           <q-btn to="/">+</q-btn>
@@ -140,14 +141,15 @@
             <q-card-section  class="q-pt-none">
               <q-list style="width:240px" >
                 <div class="q-col-gutter-md row justify-center">
-                  <div class="col-12" style="text-align:center" v-for="(nameAllArrChildren, index) in nameAllArrChildrens" :key="index" >
+                  <div class="col-12" style="text-align:center"
+                   v-for="(allArrChild, index) in allArrChildren" :key="index" >
                     <q-img
                     src="https://placeimg.com/500/300/nature"
                     :ratio="4/3"
                     />
-                    <span>{{nameAllArrChildren.name}}</span>
+                    <span>{{allArrChild.name}}</span>
                     <br>
-                    <q-btn @click="deleteItem(index), asdasd()" style="width:100px" >Удалить</q-btn>
+                    <q-btn @click="deleteItem(index), messDelete()" style="width:100px" >Удалить</q-btn>
                   </div>
                 </div>
               </q-list>
@@ -197,8 +199,11 @@
               :rules="[ val => val && val.length > 0 || 'Это обязательное поле']"
             />
             <div>
-              <q-btn no-caps v-if="sendBtn" label="Отправить" type="submit" color="primary" v-close-popup @click="secondDialog = true" />
-              <q-btn no-caps label="Отменить" type="reset" color="primary" flat class="q-ml-sm" v-close-popup />
+              <q-btn no-caps v-if="sendBtn" label="Отправить"
+               type="submit" color="primary"
+               v-close-popup @click="secondDialog = true" />
+              <q-btn no-caps label="Отменить" type="reset" color="primary"
+               flat class="q-ml-sm" v-close-popup />
             </div>
           </q-form>
         </q-card-section>
@@ -242,11 +247,16 @@ export default {
         name:'',
         text:'',
         secondDialog: false,
-        whantDelete: false
+        whantDelete: false,
     }
   },
 
     computed:{
+      // addNewUser(){
+      //   if (this.$store.allChildren.length  == 3)
+      //     return false
+      //   }else return true 
+      // },
       btntitle() {
         let currentPath = this.$route.fullPath
         if (currentPath == '/week') return 'Неделя'
@@ -256,10 +266,15 @@ export default {
       sendBtn(){
         if (this.name.length >= 3 && this.text.length >=5) return true
       },
-    ...mapGetters(['nameChildren','nameAllArrChildrens'])
+    ...mapGetters(['nameChildren','allArrChildren'])
     },
      methods: {
-       ...mapActions(['deleteItem']),
+       ...mapActions(['deleteItem', 'currentChild']),
+
+        //  dddd(index){
+        //   alert(this.allArrChild[index])
+        //  },
+       
       onItemClick1 () {
        console.log('Clicked on an Item1')
       },
@@ -280,12 +295,15 @@ export default {
           return this.w = false 
           }
       },
-      asdasd(){
+      messDelete(){
         this.$q.notify({
             message: '<span style="color: white">Удалено</span>',
             color: 'primary',
             html: true
           })
+      },
+      aaa(){
+        alert("Click")
       }
     }
 }

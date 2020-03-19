@@ -3,13 +3,17 @@
   <h3>Электронный журнал</h3>
     <span >Школа № 30</span>
     <div>
-      <q-btn @click="scan()">go scan</q-btn>
+      <q-btn clicable @click="scan()">go scan</q-btn>
       <q-btn @click="info1()">INFO</q-btn>
-      <div>DATA:{{dataChild}}</div>
+      <q-btn @click="test()">TEST</q-btn>
+      <div>DATA:{{currentChild.comment}}</div>
+      __________________________________
       <div>INFO:{{info}}</div>
       <div>
         <!-- <q-btn @decode="onDecode" > dsdfsdsfd</q-btn> -->
-    <qrcode-stream @decode="onDecode"></qrcode-stream>
+      <q-btn @click="test()">
+        <qrcode-stream @decode="onDecode"></qrcode-stream>
+      </q-btn>
     
     </div>
     </div>
@@ -25,7 +29,7 @@ import axios from 'axios'
 export default {
 data(){
   return{
-    info:''
+    info:{}
   }
 },
 components: {
@@ -34,24 +38,34 @@ components: {
     QrcodeCapture
   },
 computed:{
-  ...mapGetters(['dataChild'])
+  ...mapGetters(['currentChild'])
 },
 
 methods:{
-  ...mapActions(['giveChild']),
+  ...mapActions(['giveChild', 'gaveChild1']),
   async scan(){
-    cordova.plugins.barcodeScanner.scan(
-        function(result){
-          alert(result.text)
-          this.giveChild(result)
-        }
-   );
+    cordova.plugins.barcodeScanner.scan((result)=>{
+      let resultT = result.text 
+      this.gaveChild1(resultT)
+      alert('Туть')
+      });
   },
+    test(){
+      cordova.plugins.android.permissions.hasPermission(permissions.CAMERA, function( status ){
+      if ( status.hasPermission ) {
+        alert("Yes :D ");
+      }
+      else {
+        alert("No :( ");
+      }
+    });
+    },
   info1(){
   // localStorage.getItem('store')
-    let value = localStorage.getItem('store')
+    let value = LocalStorage.getItem('store')
     this.info = value  
     alert(this.info)
+    alert(LocakStorage)
   },
   async onDecode (decodedString) {
     alert(decodedString)
