@@ -5,13 +5,17 @@
     <div>
       <q-btn clicable @click="scan()">go scan</q-btn>
       <q-btn @click="info1()">INFO</q-btn>
-      <q-btn @click="test()">TEST</q-btn>
+       
+      <q-btn @click="test()">TEST scan</q-btn>
+      
       <div>DATA:{{currentChild.comment}}</div>
       __________________________________
       <div>INFO:{{info}}</div>
+        __________________________________
+      <div>Code:{{code}}</div>
       <div>
         <!-- <q-btn @decode="onDecode" > dsdfsdsfd</q-btn> -->
-      <q-btn @click="test()">
+      <q-btn >
         <qrcode-stream @decode="onDecode"></qrcode-stream>
       </q-btn>
     
@@ -29,7 +33,8 @@ import axios from 'axios'
 export default {
 data(){
   return{
-    info:{}
+    info:{},
+    code:''
   }
 },
 components: {
@@ -42,26 +47,16 @@ computed:{
 },
 
 methods:{
+
   ...mapActions(['giveChild', 'gaveChild1']),
   async scan(){
-    cordova.plugins.barcodeScanner.scan((result)=>{
-      let resultT = result.text 
-      this.gaveChild1(resultT)
+    cordova.plugins.barcodeScanner.scan( async(result)=>{
+      this.gaveChild1(result.text)
       alert('Туть')
       });
   },
-    test(){
-      cordova.plugins.android.permissions.hasPermission(permissions.CAMERA, function( status ){
-      if ( status.hasPermission ) {
-        alert("Yes :D ");
-      }
-      else {
-        alert("No :( ");
-      }
-    });
-    },
+
   info1(){
-  // localStorage.getItem('store')
     let value = LocalStorage.getItem('store')
     this.info = value  
     alert(this.info)
