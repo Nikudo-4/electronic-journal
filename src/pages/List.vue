@@ -13,13 +13,19 @@
       <tbody >
         <tr v-for="(subject,id) in subjects" :key="id">
           <td class="text-left" 
-          >{{subject.name}}</td>
-          <!-- <td class="text-right">{{subject.assessment}}</td>
-          <td class="text-right">{{subject.assessment}}</td>
-          <td class="text-right">{{subject.assessment}}</td>
-          <td class="text-right">{{subject.assessment}}</td>
-          <td class="text-right">{{subject.assessment}}</td>
-          <td class="text-right">{{subject.assessment}}</td> -->
+          >{{subject.title}}</td>
+          <td class="text-right">{{grades}}</td>
+          <td class="text-right">{{grades}}</td>
+          <td class="text-right">{{grades}}</td>
+          <td class="text-right">{{grades}}</td>
+          <td class="text-right">{{grades}}</td>
+          <td class="text-right">{{grades}}</td>
+          <!-- <td class="text-right">{{subject.id}}</td>
+          <td class="text-right">{{subject.id}}</td>
+          <td class="text-right">{{subject.id}}</td>
+          <td class="text-right">{{subject.id}}</td>
+          <td class="text-right">{{subject.id}}</td> -->
+     
         </tr>
       </tbody>
     </q-markup-table>
@@ -27,7 +33,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters,mapActions} from 'vuex'
 import moment, { locale } from 'moment'
 
 export default {
@@ -36,14 +42,23 @@ export default {
     data(){
         return{
             separator: 'vertical',
-  
+            currentGrades:''
         }
     },
   computed:{
-   ...mapGetters(["objectDays","subjects","objectMonth"]),
+   ...mapGetters(["objectDays","subjects","grades","currentChild"]),
     },
+    mounted(){
+      this.giveSubjects()
+      this.giveGrades(this.currentChild.uuid)
+    },
+    watch:{
+    currentChild:function(val){
+      this.giveGrades(this.currentChild.uuid)
+    }
+  },
   methods:{
-    
+    ...mapActions(["giveSubjects","giveGrades"])
   }
 }
 </script>

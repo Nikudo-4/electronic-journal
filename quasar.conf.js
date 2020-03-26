@@ -46,6 +46,7 @@ module.exports = function (ctx) {
 
       components: [],
       directives: [],
+      boot:['initialiseStore'],
 
       // Quasar plugins
       plugins: ['Notify','LocalStorage']

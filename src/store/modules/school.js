@@ -1,13 +1,14 @@
 import moment, { locale } from 'moment'
-import { LocalStorage } from 'quasar'
+//import { LocalStorage } from 'quasar'
 
 import {version} from './../../../package.json';
 
 export default {
 
-
-
     actions: {
+      initialiseStore ({commit}) {             
+            commit('initialiseStore',store)
+        },
         deleteItem ({commit}, id) {             
             commit('deleteItem', id)
         },
@@ -18,11 +19,24 @@ export default {
 
             commit('updateDate', index)
         },
+        async giveChild2(ctx){
+          try {
+        
+              const res = await fetch("http://193.228.162.185:9072/api/app/schoolchild/d6afcb30-6e78-11ea-8ee3-b5464af24908");
+             
+              const dataChild = await res.json();
+               ctx.commit('updateData', dataChild);
+               ctx.commit('currentChild', dataChild);
+              //  ctx.commit('addQR',decodedString);
+          } catch (err) {
+              alert(err)
+            }
+        },
         async giveChild1(ctx, resultT){
           try {
-            alert("Я")
+        
               const res = await fetch("http://193.228.162.185:9072/api/app/schoolchild/"+resultT);
-              alert(res)
+             
               const dataChild = await res.json();
                ctx.commit('updateData', dataChild);
                ctx.commit('currentChild', dataChild);
@@ -33,9 +47,9 @@ export default {
         },
         async giveChild(ctx, decodedString){
           try {
-            alert("Я")
+        
               const res = await fetch("http://193.228.162.185:9072/api/app/schoolchild/"+decodedString);
-              alert(res)
+     
               const dataChild = await res.json();
                ctx.commit('updateData', dataChild);
                ctx.commit('currentChild', dataChild);
@@ -53,20 +67,38 @@ export default {
             alert(err)
             }
         },
+        async giveGrades(ctx, uuid){
+          try {
+            const res = await fetch("http://193.228.162.185:9072/api/app/schoolchild/grades/"+uuid, 
+            {
+              method:'post',
+              body: JSON.stringify({from:'2019-12-11', to:'2020-12-12'}),
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+                }
+            });
+            const grades = await res.json();
+            ctx.commit('updateGrades', grades);
+          } catch (err) {
+            alert(err)
+            }
+        },
         updateData({commit}){
           commit('updateData', )
         },
         addQR({commit}){
-          commit('updateData', )
+          commit('addQR', )
         }
     },
 
     mutations: {
+      
       //local storege
       initialiseStore(state) {
         // Check if the store exists
-        if(LocalStorage.getItem('store')) {
-          let store = JSON.parse(LocalStorage.getItem('store'));
+        if(localStorage.getItem('store')) {
+          let store = JSON.parse(localStorage.getItem('store'));
           // Check the version stored against current. If different, don't
           // load the cached version
           if(store.version == version) {
@@ -79,10 +111,10 @@ export default {
         }
       },
         addQR(state, decodedString){
-        return state.qrCodes = decodedString
+         return state.qrCodes = decodedString
         },
         updateDate(state, date){
-            return state.date = date
+          return state.date = date
         },
         updateData(state, dataChild){
           if(state.allChildren.length == 0) {
@@ -101,6 +133,9 @@ export default {
         updateSubj(state, subjects){
           return state.subjects = subjects
         },
+        updateGrades(state, grades){
+          return state.grades = grades
+        },
         // addQR(state, qrCodes){
         //   return state.qrCodes = qrCodes
         // },
@@ -108,18 +143,8 @@ export default {
           return state.currentChild = dataChild
         },
         currentChildSort(state, index){
-          // let currEll = state.allChildren.findIndex( el => el.id == index.id)
-          // if(currEll< 0) 
           return state.currentChild = index
         },
-        // currentChildSort(state, index){
-        //   state.allChildren.forEach(element =>{
-        //     if(element.index == ){
-        //       state.currentChild = null
-        //       return state.currentChild = currentValue
-        //     }
-        //   });
-        // },
         plusWeek(state){
           let t = state.date
           t = moment(t).add(1,'isoWeeks')
@@ -149,7 +174,6 @@ export default {
           let t = state.date
           t = moment(t).add(-1,'isoWeeks')
           return state.date = t
-
         },
    },
     state: {
@@ -157,8 +181,10 @@ export default {
         allChildren:[],
         date: new Date(Date.now()),
         subjects:{},
+        grades:[],
+       
         version: '',
-        qrCodes:[]
+        qrCodes:''
     },
     
     getters: {
@@ -175,6 +201,20 @@ export default {
        },
        subjects(state){
         return state.subjects
+       },
+       grades(state){
+          let data = state.grades
+        for (var key1 in data) {
+          for (var key2 in data[key1]) {
+            let tolevel = data[key1][key2]
+            for (var key3 in tolevel){
+              if (key3 =='grades'){
+                  if(tolevel[key3][0]['grade'] != null)
+                  return(tolevel[key3][0]['grade'])
+              }
+            }
+          }
+        }
        },
        objectDays(state) {
         return {

@@ -19,6 +19,7 @@
       <q-btn color="primary" size="xs"
         to="/list"
         clickable
+        no-caps
         @click="linkedBtn"
         v-if="!w"
         >
@@ -27,6 +28,7 @@
       <q-btn color="primary" size="xs"
         to="/week"
         clickable
+        no-caps
         @click="linkedBtn"
         v-else-if="w"
         >
@@ -35,7 +37,7 @@
       
     </div>
       </q-toolbar>
-
+      <q-img class="header-image absolute-top" src="statics/bg.png"/>
     </q-header>
 
     <q-drawer
@@ -59,7 +61,7 @@
           <div class="col-4" v-for="(allArrChild, index) in allArrChildren" :key="index"
            @click="currentChild(allArrChild)" clickable v-close-popup >
             <q-img
-            src="https://placeimg.com/500/300/nature"
+            src="statics/faceImg.png"
             :ratio="4/3"
             />
             <span >{{allArrChild.name}}</span>
@@ -144,7 +146,7 @@
                   <div class="col-12" style="text-align:center"
                    v-for="(allArrChild, index) in allArrChildren" :key="index" >
                     <q-img
-                    src="https://placeimg.com/500/300/nature"
+                    src="statics/faceImg.png"
                     :ratio="4/3"
                     />
                     <span>{{allArrChild.name}}</span>
@@ -308,8 +310,12 @@ export default {
     }
 }
 </script>
-<style>
+<style sass>
 .inDeveloping{
   opacity: 0.3;
+}
+.header-image{
+  height: 100%;
+  z-index: -1;
 }
 </style>

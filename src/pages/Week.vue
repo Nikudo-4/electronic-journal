@@ -49,7 +49,7 @@
           </div>
           <q-separator inset />
           <q-card-section class="text-black" style="opacity: 0.9;   " v-for="subject in subjects" :key="subject.title">
-             {{subject.title}} : {{subject.id}}
+             {{subject.title}} : {{grades}}
           </q-card-section>
         
       </q-card-section>
@@ -84,6 +84,7 @@ export default {
     return {
     vision: false,
     d: new Date(Date.now()),
+    currentGrades:''
   
     }
   },
@@ -102,14 +103,19 @@ export default {
         let f = moment(a).daysInMonth();
         return f
       },
-    ...mapGetters(["formatBtn","objectDays","subjects"]),
-    // не пойму как привязать текущий день к нужному ему массиву рассписания
+    ...mapGetters(["formatBtn","objectDays","subjects","grades","currentChild"]),
   },
   mounted(){
     this.giveSubjects()
+    this.giveGrades(this.currentChild.uuid)
+  },
+  watch:{
+    currentChild:function(val){
+      this.giveGrades(this.currentChild.uuid)
+    }
   },
   methods:{
-    ...mapActions(['updateDate', 'giveSubjects']),
+    ...mapActions(['updateDate', 'giveSubjects','giveGrades']),
     ...mapMutations(["plusWeek","minusWeek","handleSwipeR","handleSwipeL","handleSwipeWeekR","handleSwipeWeekL"]), 
 
       handleSwipeT(){

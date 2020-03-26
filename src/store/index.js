@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 
+import { LocalStorage } from 'quasar'
 
 import school from './modules/school.js'
 
@@ -18,19 +19,26 @@ Vue.use(Vuex)
 
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
+    beforeCreate() {
+      this.$store.commit('initialiseStore');
+      alert('am here')
+    },
+
     modules: {
       school
     },
-    
     // enable strict mode (adds overhead!)
     // for dev mode only
     strict: process.env.DEV
   })
+  
+  
   Store.subscribe((mutation, state) => {
     // Store the state object as a JSON string
     let storeInit =  JSON.stringify(state)
 
     localStorage.setItem('store', storeInit);
+    
   });
   //   Store.subscribe((mutation, state) => {
   //  
