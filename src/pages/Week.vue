@@ -36,22 +36,26 @@
       bordered
       flat
     >
-      <q-card-section class="text-white"
-       v-for="(objectDay, index) in objectDays.date" :key="index"
-        v-touch-swipe.mouse.right="handleSwipeWeekR"
-        v-touch-swipe.mouse.left="handleSwipeWeekL"
-        >
-        <div class="q-pa-sm text-h6"
-         style="background: radial-gradient(circle, #35a2ff 0%, #014a88 100%); 
-          text-align:center;"
-           >
-          {{objectDay.name}}{{objectDay.date}}
-          </div>
-          <q-separator inset />
-          <q-card-section class="text-black" style="opacity: 0.9;   " v-for="subject in subjects" :key="subject.title">
-             {{subject.title}} : {{grades}}
+        <q-card-section class="text-black"
+          v-for="key in grades" :key="key"
+            v-touch-swipe.mouse.right="handleSwipeWeekR"
+            v-touch-swipe.mouse.left="handleSwipeWeekL"
+            >
+                        <!-- style="background: radial-gradient(circle, #35a2ff 0%, #014a88 100%); 
+              text-align:center;" -->
+            <div class="q-pa-sm text-h6"
+              v-for="key2 in key" :key="key2"
+              
+              >
+              {{key2.date}}
+              
+              <q-separator inset />
+              <q-card-section class="text-black" style="opacity: 0.9;">
+                {{key2.subject_name}} :
+                <span 
+                v-for="key3 in key2.grades" :key="key3">   {{key3.grade}}</span>
           </q-card-section>
-        
+        </div>
       </q-card-section>
     </q-card>
   </div>

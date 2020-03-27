@@ -22,7 +22,7 @@ export default {
         async giveChild2(ctx){
           try {
         
-              const res = await fetch("http://193.228.162.185:9072/api/app/schoolchild/d6afcb30-6e78-11ea-8ee3-b5464af24908");
+              const res = await fetch("http://193.228.162.185:9072/api/app/schoolchild/5c4c2950-6f44-11ea-a324-a7800705b255");
              
               const dataChild = await res.json();
                ctx.commit('updateData', dataChild);
@@ -69,7 +69,7 @@ export default {
         },
         async giveGrades(ctx, uuid){
           try {
-            const res = await fetch("http://193.228.162.185:9072/api/app/schoolchild/grades/"+uuid, 
+            const res = await fetch("http://193.228.162.185:9072/api/app/schoolchild/grades/5c4c2950-6f44-11ea-a324-a7800705b255", 
             {
               method:'post',
               body: JSON.stringify({from:'2019-12-11', to:'2020-12-12'}),
@@ -203,18 +203,7 @@ export default {
         return state.subjects
        },
        grades(state){
-          let data = state.grades
-        for (var key1 in data) {
-          for (var key2 in data[key1]) {
-            let tolevel = data[key1][key2]
-            for (var key3 in tolevel){
-              if (key3 =='grades'){
-                  if(tolevel[key3][0]['grade'] != null)
-                  return(tolevel[key3][0]['grade'])
-              }
-            }
-          }
-        }
+        return state.grades
        },
        objectDays(state) {
         return {

@@ -1,34 +1,28 @@
 <template>
-<div class="list">
-<q-markup-table :separator="separator" flat bordered dense
-    
+<div class="list" >
+ <q-markup-table :separator="separator" flat bordered dense
+ 
     >
-      <thead >
-        <tr>
+    <!-- v-for="key2 in key" :key="key2" -->
+      <thead>
+        <tr style="display: inline;" v-for="(key, index) in grades" :key="index">
           <th class="text-left"></th>
-          <th class="text-right" v-for="(objectDay, index) in objectDays.date" :key="index"
-          >{{objectDay.date}}</th>
+          <th
+          v-for="(key2, index) in key" :key="index"
+          >{{key2.date}}</th>
         </tr>
       </thead>
-      <tbody >
-        <tr v-for="(subject,id) in subjects" :key="id">
-          <td class="text-left" 
-          >{{subject.title}}</td>
-          <td class="text-right">{{grades}}</td>
-          <td class="text-right">{{grades}}</td>
-          <td class="text-right">{{grades}}</td>
-          <td class="text-right">{{grades}}</td>
-          <td class="text-right">{{grades}}</td>
-          <td class="text-right">{{grades}}</td>
-          <!-- <td class="text-right">{{subject.id}}</td>
-          <td class="text-right">{{subject.id}}</td>
-          <td class="text-right">{{subject.id}}</td>
-          <td class="text-right">{{subject.id}}</td>
-          <td class="text-right">{{subject.id}}</td> -->
-     
+        
+      <tbody v-for="(key1, index) in grades" :key="index">
+        
+        <tr >
+          <td class="text-left" v-for="subject in subjects" :key="subject" >{{key22.subject_name}}</td>
+          <td class="text-right" v-for="(key3, index) in key22.grades" :key="index" >{{key3.grade}}</td>
         </tr>
       </tbody>
-    </q-markup-table>
+</q-markup-table> 
+<!-- v-for="key3 in key2.grades" :key="key3"
+v-for="subject in subjects" :key="subject" -->
 </div>
 </template>
 
@@ -42,13 +36,29 @@ export default {
     data(){
         return{
             separator: 'vertical',
-            currentGrades:''
+            currentGrades:'',
+            gradeDate:''
         }
     },
   computed:{
+    // tableData(){
+    //   let objGrades =this.grades
+    //   for(let key in objGrades){
+    //     this.gradeDate = key
+    //     for(let key2 in objGrades[key]){
+          
+    //         console.log([])
+    //       // for(let key3 in objGrades[key][key2]['grades']){
+            
+    //       // }
+    //     }
+    //   }
+    // },
+    
    ...mapGetters(["objectDays","subjects","grades","currentChild"]),
     },
     mounted(){
+      this.tableData
       this.giveSubjects()
       this.giveGrades(this.currentChild.uuid)
     },
