@@ -4,7 +4,7 @@
       <tbody>
         <tr>
           <td></td>
-          <td v-for="(day, dayKey) in grades" :key="dayKey">
+          <td v-for="(day, dayKey) in lessonsByDates" :key="dayKey">
             {{ dateFormat(dayKey) }}
           </td>
         </tr>
@@ -12,7 +12,7 @@
           <td>
             {{ subject.title }}
           </td>
-          <td v-for="(day, k) in grades" :key="k">
+          <td v-for="(day, k) in lessonsByDates" :key="k">
             <div v-for="lesson in day" :key="lesson.id">
               <div v-if="lesson.subject_id == subject.id">
                 <div v-for="grade in lesson.grades" :key="grade.id">
@@ -36,15 +36,12 @@ export default {
   data() {
     return {
       separator: "vertical",
-      currentGrades: "",
-      gradeDate: ""
     };
   },
   computed: {
-    ...mapGetters(["objectDays", "subjects", "grades", "currentChild"])
+    ...mapGetters(["subjects", "lessonsByDates", "currentChild"])
   },
   mounted() {
-    this.tableData;
     this.giveSubjects();
     this.giveGrades(this.currentChild.uuid);
   },

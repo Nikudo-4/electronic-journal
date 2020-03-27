@@ -34,7 +34,7 @@ export default {
     async giveChild1(ctx, resultT) {
       try {
         const res = await fetch(
-          `http://193.228.162.185:9072/api/app/schoolchild/${resultT}` 
+          `http://193.228.162.185:9072/api/app/schoolchild/${resultT}`
         );
 
         const dataChild = await res.json();
@@ -48,7 +48,7 @@ export default {
     async giveChild(ctx, decodedString) {
       try {
         const res = await fetch(
-          `http://193.228.162.185:9072/api/app/schoolchild/${decodedString}` 
+          `http://193.228.162.185:9072/api/app/schoolchild/${decodedString}`
         );
 
         const dataChild = await res.json();
@@ -83,8 +83,8 @@ export default {
             }
           }
         );
-        const grades = await res.json();
-        ctx.commit("updateGrades", grades);
+        const lessonsByDates = await res.json();
+        ctx.commit("updateLessonsByDates", lessonsByDates);
       } catch (err) {
         alert(err);
       }
@@ -137,12 +137,9 @@ export default {
     updateSubj(state, subjects) {
       return (state.subjects = subjects);
     },
-    updateGrades(state, grades) {
-      return (state.grades = grades);
+    updateLessonsByDates(state, lessonsByDates) {
+      return (state.lessonsByDates = lessonsByDates);
     },
-    // addQR(state, qrCodes){
-    //   return state.qrCodes = qrCodes
-    // },
     currentChild(state, dataChild) {
       return (state.currentChild = dataChild);
     },
@@ -185,7 +182,7 @@ export default {
     allChildren: [],
     date: new Date(Date.now()),
     subjects: {},
-    grades: [],
+    lessonsByDates: [],
 
     version: "",
     qrCodes: ""
@@ -210,8 +207,8 @@ export default {
     subjects(state) {
       return state.subjects;
     },
-    grades(state) {
-      return state.grades;
+    lessonsByDates(state) {
+      return state.lessonsByDates;
     },
     objectDays(state) {
       return {
