@@ -1,80 +1,72 @@
 <template>
-<div class="list" >
- <q-markup-table :separator="separator" flat bordered dense
- 
-    >
-    <!-- v-for="key2 in key" :key="key2" -->
-      <thead>
-        <tr style="display: inline;" v-for="(key, index) in grades" :key="index">
-          <th class="text-left"></th>
-          <th
-          v-for="(key2, index) in key" :key="index"
-          >{{key2.date}}</th>
+  <div class="list">
+    <q-markup-table :separator="separator" flat bordered dense>
+      <tbody>
+        <tr>
+          <td></td>
+          <td v-for="(day, dayKey) in grades" :key="dayKey">
+            {{ dateFormat(dayKey) }}
+          </td>
         </tr>
-      </thead>
-        
-      <tbody v-for="(key1, index) in grades" :key="index">
-        
-        <tr >
-          <td class="text-left" v-for="subject in subjects" :key="subject" >{{key22.subject_name}}</td>
-          <td class="text-right" v-for="(key3, index) in key22.grades" :key="index" >{{key3.grade}}</td>
+        <tr v-for="(subject, index) in subjects" :key="index">
+          <td>
+            {{ subject.title }}
+          </td>
+          <td v-for="(day, k) in grades" :key="k">
+            <div v-for="lesson in day" :key="lesson.id">
+              <div v-if="lesson.subject_id == subject.id">
+                <div v-for="grade in lesson.grades" :key="grade.id">
+                  {{ grade.grade }}
+                </div>
+              </div>
+              <div v-else>-</div>
+            </div>
+          </td>
         </tr>
       </tbody>
-</q-markup-table> 
-<!-- v-for="key3 in key2.grades" :key="key3"
-v-for="subject in subjects" :key="subject" -->
-</div>
+    </q-markup-table>
+  </div>
 </template>
 
 <script>
-import {mapGetters,mapActions} from 'vuex'
-import moment, { locale } from 'moment'
+import { mapGetters, mapActions } from "vuex";
+import moment, { locale } from "moment";
 
 export default {
-    
-
-    data(){
-        return{
-            separator: 'vertical',
-            currentGrades:'',
-            gradeDate:''
-        }
-    },
-  computed:{
-    // tableData(){
-    //   let objGrades =this.grades
-    //   for(let key in objGrades){
-    //     this.gradeDate = key
-    //     for(let key2 in objGrades[key]){
-          
-    //         console.log([])
-    //       // for(let key3 in objGrades[key][key2]['grades']){
-            
-    //       // }
-    //     }
-    //   }
-    // },
-    
-   ...mapGetters(["objectDays","subjects","grades","currentChild"]),
-    },
-    mounted(){
-      this.tableData
-      this.giveSubjects()
-      this.giveGrades(this.currentChild.uuid)
-    },
-    watch:{
-    currentChild:function(val){
-      this.giveGrades(this.currentChild.uuid)
+  data() {
+    return {
+      separator: "vertical",
+      currentGrades: "",
+      gradeDate: ""
+    };
+  },
+  computed: {
+    ...mapGetters(["objectDays", "subjects", "grades", "currentChild"])
+  },
+  mounted() {
+    this.tableData;
+    this.giveSubjects();
+    this.giveGrades(this.currentChild.uuid);
+  },
+  watch: {
+    currentChild: val => {
+      this.giveGrades(this.currentChild.uuid);
     }
   },
-  methods:{
-    ...mapActions(["giveSubjects","giveGrades"])
+  methods: {
+    ...mapActions(["giveSubjects", "giveGrades"]),
+
+    dateFormat(date) {
+      return moment(date)
+        .locale("ru")
+        .format("dddd D MMM");
+    }
   }
-}
+};
 </script>
 
 <style>
-.list{
-    height: 100% auto;
+.list {
+  height: 100% auto;
 }
 </style>
