@@ -17,8 +17,8 @@
 
         <div class="q-pa-md">
           <q-btn
-            color="primary"
-            size="xs"
+            color="btnmain"
+            size="sm"
             to="/list"
             clickable
             no-caps
@@ -28,8 +28,8 @@
             {{ btntitle }}
           </q-btn>
           <q-btn
-            color="primary"
-            size="xs"
+            color="btnmain"
+            size="sm"
             to="/week"
             clickable
             no-caps
@@ -58,24 +58,33 @@
         icon="menu"
         aria-label="Menu"
       />
-      <q-list clickable>
+      <span style="font-size: 20px">
+      {{ nameChildren }}
+      </span>
+      <q-list >
         <div
-          class="q-col-gutter-md row justify-center"
+          class="row q-col-gutter-sm  justify-center"
           style="text-align:center;"
         >
           <div
             class="col-4"
             v-for="(allArrChild, index) in allArrChildren"
             :key="index"
-            @click="currentChild(allArrChild)"
+            @click="currentChildSort(allArrChild)"
+            
+          >
+          <q-btn
             clickable
-            v-close-popup
+            initialiseStore
+            
+            no-caps
           >
             <q-img src="statics/faceImg.png" :ratio="4 / 3" />
             <span>{{ allArrChild.name }}</span>
+          </q-btn>
           </div>
-          <div class="col-4">
-            <q-btn to="/">+</q-btn>
+          <div class="q-mt-md col-4">
+            <q-btn v-if="allArrChildren.length <=2" to="/">+</q-btn>
           </div>
         </div>
         <q-item clickable tag="a" to="/week">
@@ -308,11 +317,7 @@ export default {
     ...mapGetters(["nameChildren", "allArrChildren"])
   },
   methods: {
-    ...mapActions(["deleteItem", "currentChild"]),
-
-    //  dddd(index){
-    //   alert(this.allArrChild[index])
-    //  },
+    ...mapActions(["deleteItem", "currentChildSort"]),
 
     onItemClick1() {
       console.log("Clicked on an Item1");
@@ -339,9 +344,6 @@ export default {
         html: true
       });
     },
-    aaa() {
-      alert("Click");
-    }
   }
 };
 </script>

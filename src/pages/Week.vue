@@ -53,27 +53,40 @@
       </div>
       <q-card class="q-ma-sm  my-card" bordered flat>
         <q-card-section
-          class="text-black"
+          class="text-white"
           v-for="(day, k) in lessonsByDates"
           :key="k"
           v-touch-swipe.mouse.right="handleSwipeWeekR"
           v-touch-swipe.mouse.left="handleSwipeWeekL"
         >
-          <!-- style="background: radial-gradient(circle, #35a2ff 0%, #014a88 100%); 
-              text-align:center;" -->
-          <div class="q-pa-sm text-h6" v-for="lesson in day" :key="lesson.id">
-            {{ dateFormat(lesson.date) }}
-
-            <q-separator inset />
-            <q-card-section class="text-black" style="opacity: 0.9;">
+          <div class="q-pa-sm text-h6"
+          style="background: radial-gradient(circle, #8ecdec 0%, #4c4cd4 100%); 
+              text-align:center;"
+           >
+           <span v-if="k">
+           {{dateFormat(k)}}
+           </span>
+            <span v-else>Данных о дате нет.</span>
+            <div v-for="lesson in day" :key="lesson.id">
+            <q-card-section style="background: white; opacity: 0.9; text-align:left;" class="text-black">
+              
+              <span v-if="lesson.subject_name">
               {{ lesson.subject_name }} :
-              <span v-for="grade in lesson.grades" :key="grade.id">
-                {{ grade.grade }}
               </span>
+              <span v-else>Данных о предмете нет. Вернитесь на корректную дату.</span>
+              <span v-if="lesson.subject_name">
+              <span 
+              v-for="grade in lesson.grades" :key="grade.id">
+                {{ grade.grade }} 
+              </span>
+              </span>
+              <span v-else>Оценок нет</span>
             </q-card-section>
+            </div>
           </div>
         </q-card-section>
       </q-card>
+
     </div>
   </div>
 </template>
@@ -87,7 +100,6 @@ export default {
   data() {
     return {
       vision: false,
-      d: new Date(Date.now()),
     };
   },
 
@@ -105,24 +117,32 @@ export default {
       let f = moment(a).daysInMonth();
       return f;
     },
+
     ...mapGetters([
       "formatBtn",
       "subjects",
       "lessonsByDates",
-      "currentChild"
+      "currentChild",
+      'objectDays',
+      'giveDate'
     ])
   },
   mounted() {
-    this.giveSubjects();
-    this.giveGrades(this.currentChild.uuid);
+    let uuid = this.currentChild.uuid
+      this.giveGrades(uuid);
   },
   watch: {
     currentChild: function(val) {
-      this.giveGrades(this.currentChild.uuid);
+      let uuid = this.currentChild.uuid
+      this.giveGrades(uuid);
+    },
+    formatBtn: function(val){
+      let uuid = this.currentChild.uuid
+      this.giveGrades(uuid);
     }
   },
   methods: {
-    ...mapActions(["updateDate", "giveSubjects", "giveGrades"]),
+    ...mapActions(["updateDate", "giveGrades"]),
     ...mapMutations([
       "plusWeek",
       "minusWeek",

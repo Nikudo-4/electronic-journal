@@ -5,6 +5,7 @@ import Vuex from 'vuex'
 import { LocalStorage } from 'quasar'
 
 import school from './modules/school.js'
+import { version } from 'moment'
 
 Vue.use(Vuex)
 
@@ -19,14 +20,11 @@ Vue.use(Vuex)
 
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
-    beforeCreate() {
-      this.$store.commit('initialiseStore');
-      alert('am here')
-    },
-
+    
     modules: {
       school
     },
+
     // enable strict mode (adds overhead!)
     // for dev mode only
     strict: process.env.DEV
@@ -35,15 +33,24 @@ export default function (/* { ssrContext } */) {
   
   Store.subscribe((mutation, state) => {
     // Store the state object as a JSON string
-    let storeInit =  JSON.stringify(state)
-
-    localStorage.setItem('store', storeInit);
+    // localStorage.setItem('store1', localStorage.getItem("store"))
+    console.log(state.school.allChildren.length)
+   
+    if(state.school.allChildren.length  >= 1){
+      // let store = {
+      //   allChildren : state.school.allChildren,
+      //   currentChild : state.school.currentChild,
+      //   version : state.school.version
+      // };
+      localStorage.setItem('store', JSON.stringify(state.school))
+    }
+  //  let forsStored =  JSON.parse()
     
+    // localStorage.setItem('store2',losalStorage.getItem('store1'))
+      
+      
   });
-  //   Store.subscribe((mutation, state) => {
-  //  
-  //     state.allChild
-  // });
+
 
   return Store
 }

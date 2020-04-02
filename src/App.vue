@@ -5,12 +5,14 @@
 </template>
 
 <script>
+import { mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
-  
-// mounted(){
-//   this.$store.commit('initialiseStore');
-//   alert('am here')
-// },
+
+// beforeCreate() {
+                
+//             this.$store[school].commit('initialiseStore');
+//           },
+
 }
 </script>

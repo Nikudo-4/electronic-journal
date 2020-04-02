@@ -8,11 +8,12 @@
     <div>
       <q-btn clicable @click="scan()" no-caps >Сканировать</q-btn>
 
-      <q-btn @click="giveChild3()">SCAN TEST</q-btn>
        
-      <div>DATA:{{currentChild.uuid}}</div>
-       __________________________________
-       <div>INFO:{{info}}</div>
+      <!-- <div>L:{{local1}}</div>
+       __________________________________ -->
+       <div>INFO:{{currentChild}}</div>
+      <q-btn @click="giveChild2()">SCAN TEST</q-btn>
+      <q-btn @click="initialiseStore()">initialiseStore</q-btn>
 <!--        
       <div>LOCAL:{{local}}</div>
         <q-btn @click="localStor" > setItem</q-btn>
@@ -38,10 +39,9 @@ import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from 'vue-qrcode-reader'
 
 import axios from 'axios'
 export default {
-beforeCreate(){
-     this.$store.commit('initialiseStore');
-    // this.initialiseStore()
-},
+// beforeCreate(){
+//   this.$store.commit('initialiseStore');  
+// },
   
 data(){
   return{
@@ -51,8 +51,7 @@ data(){
   }
 },
 // mounted(){
-//   localStorage.setItem("name", 1)
-//  this.local = localStorage.getItem("name1")
+//   this.$store.commit('initialiseStore');
 // },
 
 components: {
@@ -61,7 +60,11 @@ components: {
     QrcodeCapture
   },
 computed:{
-  ...mapGetters(['currentChild'])
+  ...mapGetters(['currentChild']),
+  local1(){
+    let a
+    return a = JSON.parse(localStorage.getItem('store'))
+  }
 },
 watch:{
   code: function(val){
@@ -73,16 +76,20 @@ watch:{
 
 methods:{
 
-  ...mapActions(['giveChild', 'gaveChild1','giveChild2','addQR', 'initialiseStore']),
+  ...mapActions(['giveChild', 'gaveChild1','giveChild2','addQR', ]),
   async scan(){
     cordova.plugins.barcodeScanner.scan( async(result)=>{
       
       this.code = result.text
 
       });
+    
 
   },
-
+  initialiseStore(){
+        console.log(this.$store.state.school)
+        this.$store.state.commit('initialiseStore');
+      },
   // info1(){
   //   let value = window.localStorage.getItem('store')
   //   this.info = value  

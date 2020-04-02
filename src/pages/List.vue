@@ -15,8 +15,8 @@
           <td v-for="(day, k) in lessonsByDates" :key="k">
             <div v-for="lesson in day" :key="lesson.id">
               <div v-if="lesson.subject_id == subject.id">
-                <div v-for="grade in lesson.grades" :key="grade.id">
-                  {{ grade.grade }}
+                <div style="display: inline" v-for="grade in lesson.grades" :key="grade.id">
+                  {{ grade.grade }} 
                 </div>
               </div>
               <div v-else>-</div>
@@ -43,15 +43,17 @@ export default {
   },
   mounted() {
     this.giveSubjects();
-    this.giveGrades(this.currentChild.uuid);
+     let uuid = this.currentChild.uuid
+    this.giveGradesForMonth(uuid);
   },
   watch: {
-    currentChild: val => {
-      this.giveGrades(this.currentChild.uuid);
+   currentChild: function(val) {
+     let uuid = this.currentChild.uuid
+      this.giveGradesForMonth(uuid);
     }
   },
   methods: {
-    ...mapActions(["giveSubjects", "giveGrades"]),
+    ...mapActions(["giveSubjects", "giveGradesForMonth"]),
 
     dateFormat(date) {
       return moment(date)

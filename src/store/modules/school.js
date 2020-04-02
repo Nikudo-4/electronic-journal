@@ -5,13 +5,13 @@ import { version } from "./../../../package.json";
 
 export default {
   actions: {
-    initialiseStore({ commit }) {
-      commit("initialiseStore", store);
-    },
+    // initialiseStore({ commit }) {
+    //   commit("initialiseStore");
+    // },
     deleteItem({ commit }, id) {
       commit("deleteItem", id);
     },
-    currentChild({ commit }, index) {
+    currentChildSort({ commit }, index) {
       commit("currentChildSort", index);
     },
     async updateDate({ commit }) {
@@ -20,13 +20,13 @@ export default {
     async giveChild2(ctx) {
       try {
         const res = await fetch(
-          "http://193.228.162.185:9072/api/app/schoolchild/5c4c2950-6f44-11ea-a324-a7800705b255"
+          "http://193.228.162.185:9072/api/app/schoolchild/08512690-73e6-11ea-a632-8d0cd8546917"
         );
 
         const dataChild = await res.json();
         ctx.commit("updateData", dataChild);
-        ctx.commit("currentChild", dataChild);
-        //  ctx.commit('addQR',decodedString);
+        // ctx.commit("currentChild", dataChild);
+       
       } catch (err) {
         alert(err);
       }
@@ -36,11 +36,9 @@ export default {
         const res = await fetch(
           `http://193.228.162.185:9072/api/app/schoolchild/${resultT}`
         );
-
         const dataChild = await res.json();
         ctx.commit("updateData", dataChild);
-        ctx.commit("currentChild", dataChild);
-        ctx.commit("addQR", decodedString);
+        // ctx.commit("currentChild", dataChild);
       } catch (err) {
         alert(err);
       }
@@ -50,11 +48,9 @@ export default {
         const res = await fetch(
           `http://193.228.162.185:9072/api/app/schoolchild/${decodedString}`
         );
-
         const dataChild = await res.json();
         ctx.commit("updateData", dataChild);
-        ctx.commit("currentChild", dataChild);
-        ctx.commit("addQR", decodedString);
+        // ctx.commit("currentChild", dataChild);
       } catch (err) {
         alert(err);
       }
@@ -71,12 +67,16 @@ export default {
       }
     },
     async giveGrades(ctx, uuid) {
+        let date = ctx.state.date
+        moment(date).locale("ru");
+        let from = moment(date).startOf("isoWeeks").format('YYYY-MM-DD');
+        let to = moment(date).endOf("isoWeeks").format('YYYY-MM-DD');
       try {
         const res = await fetch(
-          `http://193.228.162.185:9072/api/app/schoolchild/grades/5c4c2950-6f44-11ea-a324-a7800705b255`,
+          `http://193.228.162.185:9072/api/app/schoolchild/grades/${uuid}`,
           {
             method: "post",
-            body: JSON.stringify({ from: "2019-12-11", to: "2020-12-12" }),
+            body: JSON.stringify({ from:`${from}`,to:`${to}`}),
             headers: {
               "Content-Type": "application/json",
               Accept: "application/json"
@@ -85,33 +85,64 @@ export default {
         );
         const lessonsByDates = await res.json();
         ctx.commit("updateLessonsByDates", lessonsByDates);
+
       } catch (err) {
         alert(err);
       }
     },
+    async giveGradesForMonth(ctx, uuid) {
+      let date = ctx.state.date
+      moment(date).locale("ru");
+      let from = moment(date).add(-1,'months').format('YYYY-MM-DD')
+      let to = moment(date).add(1,'months').format('YYYY-MM-DD')
+    try {
+      const res = await fetch(
+        `http://193.228.162.185:9072/api/app/schoolchild/grades/${uuid}`,
+        {
+          method: "post",
+          body: JSON.stringify({ from:`${from}`,to:`${to}`}),
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+          }
+        }
+      );
+      const lessonsByDates = await res.json();
+      ctx.commit("updateLessonsByDates", lessonsByDates);
+
+    } catch (err) {
+      alert(err);
+    }
+  },
     updateData({ commit }) {
       commit("updateData");
     },
-    addQR({ commit }) {
-      commit("addQR");
-    }
   },
 
   mutations: {
-    //local storege
-    initialiseStore(state) {
-      // Check if the store exists
-      if (localStorage.getItem("store")) {
-        let store = JSON.parse(localStorage.getItem("store"));
-        // Check the version stored against current. If different, don't
-        // load the cached version
-        if (store.version == version) {
-          this.replaceState(Object.assign(state, store));
-        } else {
-          state.version = version;
-        }
-      }
-    },
+    
+    // initialiseStore(state) {
+    //   // Check if the store exists
+    //   // console.log('state:'+state)
+    //   if (localStorage.getItem("store")) {
+    //     let store = JSON.parse(localStorage.getItem("store"));
+    //     // let store1 = JSON.parse(localStorage.getItem("store1"));
+    //     // Check the version stored against current. If different, don't
+    //     // load the cached version
+    //     if (store.version == version) {
+    //       console.log('do')
+    //       console.log(state)
+    //       //  this.replaceState(Object.assign(state, store));
+    //       this.replaceState(Object.assign(state, store))
+    //       console.log('после')
+    //       console.log(state)
+    //         // 
+    //       } else {
+    //       state.version = version;
+    //     }
+    //   }
+    // },
+    
     addQR(state, decodedString) {
       return (state.qrCodes = decodedString);
     },
@@ -128,13 +159,14 @@ export default {
       );
       if (index < 0) {
         state.currentChild = dataChild;
-        return (state.allChildren = [...state.allChildren, dataChild]);
+         state.allChildren = [...state.allChildren, dataChild]
       }
     },
     deleteItem(state, index) {
       state.allChildren.splice(index, 1);
     },
     updateSubj(state, subjects) {
+      
       return (state.subjects = subjects);
     },
     updateLessonsByDates(state, lessonsByDates) {
@@ -149,6 +181,7 @@ export default {
     plusWeek(state) {
       let t = state.date;
       t = moment(t).add(1, "isoWeeks");
+      
       return (state.date = t);
     },
     minusWeek(state) {
@@ -178,14 +211,13 @@ export default {
     }
   },
   state: {
+    version: "",
+    date: new Date(Date.now()),
     currentChild: {},
     allChildren: [],
-    date: new Date(Date.now()),
+    //localStor: JSON.parse(localStorage.getItem('store')),
     subjects: {},
     lessonsByDates: [],
-
-    version: "",
-    qrCodes: ""
   },
 
   getters: {
@@ -200,6 +232,20 @@ export default {
         .locale("ru")
         .format("MMMM YYYY")}`;
       return stroka;
+    },
+    giveDate(state){
+      return state.date
+    },
+    
+    fromDate(state){
+      let date = new Date(state.date);
+      let from = moment(date).add(6,'months').format('YYYY-12-12')
+      return from
+    },
+    toDate(state){
+      let date = new Date(state.date);
+      let to = moment(date).add(6,'months').format('YYYY-12-12')
+      return to
     },
     currentChild(state) {
       return state.currentChild;
