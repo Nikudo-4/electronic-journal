@@ -59,28 +59,33 @@
           v-touch-swipe.mouse.right="handleSwipeWeekR"
           v-touch-swipe.mouse.left="handleSwipeWeekL"
         >
-          <div class="q-pa-sm text-h6"
-          style="background: radial-gradient(circle, #8ecdec 0%, #4c4cd4 100%); 
-              text-align:center;"
+          <div class="q-ptrl-xs text-h6"
+          
            >
+           <div style="background: radial-gradient(circle, #8ecdec 0%, #4c4cd4 100%); 
+              text-align:center;">
            <span v-if="k">
            {{dateFormat(k)}}
            </span>
-            <span v-else>Данных о дате нет.</span>
+           </div>
+            <!-- <span v-else>Данных о дате нет.</span> -->
             <div v-for="lesson in day" :key="lesson.id">
-            <q-card-section style="background: white; opacity: 0.9; text-align:left;" class="text-black">
+            <q-card-section style="padding:5px; background: white; opacity: 0.9; text-align:left;" class="text-black">
               
               <span v-if="lesson.subject_name">
               {{ lesson.subject_name }} :
               </span>
-              <span v-else>Данных о предмете нет. Вернитесь на корректную дату.</span>
+              <span v-else></span>
               <span v-if="lesson.subject_name">
+              <span v-if="lesson.grades[0] !== Array[0]">
               <span 
               v-for="grade in lesson.grades" :key="grade.id">
                 {{ grade.grade }} 
               </span>
               </span>
-              <span v-else>Оценок нет</span>
+              <span v-else-if="lesson.grades[0] == Array[0]" style="color:grey;font-size: 14px; opacity:0.8">Оценок нет или еще не выставлены</span>
+              </span>
+              <span v-else></span>
             </q-card-section>
             </div>
           </div>
@@ -117,7 +122,10 @@ export default {
       let f = moment(a).daysInMonth();
       return f;
     },
-
+    // gradesLength(grade){
+    //   if() return true
+    //   else false
+    // },
     ...mapGetters([
       "formatBtn",
       "subjects",

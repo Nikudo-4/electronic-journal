@@ -70,7 +70,7 @@ export default {
         let date = ctx.state.date
         moment(date).locale("ru");
         let from = moment(date).startOf("isoWeeks").format('YYYY-MM-DD');
-        let to = moment(date).endOf("isoWeeks").format('YYYY-MM-DD');
+        let to = moment(date).isoWeekday(6).format('YYYY-MM-DD');
       try {
         const res = await fetch(
           `http://193.228.162.185:9072/api/app/schoolchild/grades/${uuid}`,
@@ -121,27 +121,28 @@ export default {
 
   mutations: {
     
-    // initialiseStore(state) {
-    //   // Check if the store exists
-    //   // console.log('state:'+state)
-    //   if (localStorage.getItem("store")) {
-    //     let store = JSON.parse(localStorage.getItem("store"));
-    //     // let store1 = JSON.parse(localStorage.getItem("store1"));
-    //     // Check the version stored against current. If different, don't
-    //     // load the cached version
-    //     if (store.version == version) {
-    //       console.log('do')
-    //       console.log(state)
-    //       //  this.replaceState(Object.assign(state, store));
-    //       this.replaceState(Object.assign(state, store))
-    //       console.log('после')
-    //       console.log(state)
-    //         // 
-    //       } else {
-    //       state.version = version;
-    //     }
-    //   }
-    // },
+    initialiseStore(state) {
+      // Check if the store exists
+      // console.log('state:'+state)
+      if (localStorage.getItem("store")) {
+        let store = JSON.parse(localStorage.getItem("store"));
+        console.log(state)
+        // let store1 = JSON.parse(localStorage.getItem("store1"));
+        // Check the version stored against current. If different, don't
+        // load the cached version
+        // if (store.version == version) {
+          // console.log('do')
+          // console.log(state)
+          //  this.replaceState(Object.assign(state, store));
+          this.replaceState({...state, ...store})
+          // console.log('после')
+          // console.log(state)
+            // 
+        //   } else {
+        //   state.version = version;
+        // }
+      }
+    },
     
     addQR(state, decodedString) {
       return (state.qrCodes = decodedString);
@@ -215,7 +216,6 @@ export default {
     date: new Date(Date.now()),
     currentChild: {},
     allChildren: [],
-    //localStor: JSON.parse(localStorage.getItem('store')),
     subjects: {},
     lessonsByDates: [],
   },

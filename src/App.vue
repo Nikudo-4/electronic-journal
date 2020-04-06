@@ -9,10 +9,8 @@ import { mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
 
-// beforeCreate() {
-                
-//             this.$store[school].commit('initialiseStore');
-//           },
-
+beforeCreate() {                
+            this.$store.commit('initialiseStore');
+          },
 }
 </script>

@@ -9,17 +9,17 @@
           </td>
         </tr>
         <tr v-for="(subject, index) in subjects" :key="index">
-          <td>
+          <td :style="subject.id % 2 === 0?'background: #F5F5F5;':'background: white;'">
             {{ subject.title }}
           </td>
-          <td v-for="(day, k) in lessonsByDates" :key="k">
-            <div v-for="lesson in day" :key="lesson.id">
-              <div v-if="lesson.subject_id == subject.id">
-                <div style="display: inline" v-for="grade in lesson.grades" :key="grade.id">
+          <td :style="subject.id % 2 === 0?'background: #F5F5F5;':'background: white;'" v-for="(day, k) in lessonsByDates" :key="k">
+            <div  v-for="lesson in day" :key="lesson.id">
+              <div  style="text-align:center;" v-if="lesson.subject_id == subject.id">
+                <div   style="text-align:center; display: inline" v-for="grade in lesson.grades" :key="grade.id">
                   {{ grade.grade }} 
                 </div>
               </div>
-              <div v-else>-</div>
+              <div  style="text-align:center;" v-else>-</div>
             </div>
           </td>
         </tr>
@@ -53,6 +53,10 @@ export default {
     }
   },
   methods: {
+    oddFunc(num){
+      alert(num)
+      return num % 2 === 0 ? "true" : "false"
+    },
     ...mapActions(["giveSubjects", "giveGradesForMonth"]),
 
     dateFormat(date) {
@@ -65,6 +69,10 @@ export default {
 </script>
 
 <style>
+td {background: grey; }
+  td.col1 { background: grey;  }
+  td.col2 { background: white;  }
+  td.col3 { background: grey; }
 .list {
   height: 100% auto;
 }

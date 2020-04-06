@@ -11,9 +11,9 @@
        
       <!-- <div>L:{{local1}}</div>
        __________________________________ -->
-       <div>INFO:{{currentChild}}</div>
+       <!-- <div>INFO:{{currentChild}}</div>
       <q-btn @click="giveChild2()">SCAN TEST</q-btn>
-      <q-btn @click="initialiseStore()">initialiseStore</q-btn>
+      <q-btn @click="initialiseStore()">initialiseStore</q-btn> -->
 <!--        
       <div>LOCAL:{{local}}</div>
         <q-btn @click="localStor" > setItem</q-btn>
@@ -23,9 +23,9 @@
 
       <!-- <div>Code:{{code}}</div> 
       <div> -->
-      <q-btn >
+      <!-- <q-btn >
         <qrcode-stream @decode="onDecode"></qrcode-stream>
-      </q-btn>
+      </q-btn> -->
     
     </div>
     </div>
@@ -42,7 +42,7 @@ export default {
 // beforeCreate(){
 //   this.$store.commit('initialiseStore');  
 // },
-  
+        
 data(){
   return{
     info:{},

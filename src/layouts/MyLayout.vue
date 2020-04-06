@@ -3,6 +3,7 @@
     <q-header elevated>
       <q-toolbar>
         <q-btn
+        
           flat
           dense
           round
@@ -15,7 +16,7 @@
           {{ nameChildren }}
         </q-toolbar-title>
 
-        <div class="q-pa-md">
+        <div>
           <q-btn
             color="btnmain"
             size="sm"
@@ -24,8 +25,9 @@
             no-caps
             @click="linkedBtn"
             v-if="!w"
-          >
+          ><span style="font-size: 14px" >
             {{ btntitle }}
+          </span>
           </q-btn>
           <q-btn
             color="btnmain"
@@ -35,8 +37,9 @@
             no-caps
             @click="linkedBtn"
             v-else-if="w"
-          >
+          ><span style="font-size: 14px" >
             {{ btntitle }}
+          </span>
           </q-btn>
         </div>
       </q-toolbar>
@@ -49,6 +52,8 @@
       bordered
       content-class="bg-grey-2"
     >
+    <div class="row">
+      <div class="col-2">
       <q-btn
         style="padding-left: 15px; padding-top: 5px; "
         flat
@@ -58,9 +63,14 @@
         icon="menu"
         aria-label="Menu"
       />
-      <span style="font-size: 20px">
-      {{ nameChildren }}
-      </span>
+      </div>
+      <div class="q-mt-xs col-10">
+       <q-toolbar-title shrink style="font-size: 22px" >
+          {{ nameChildren }}
+        </q-toolbar-title>
+      </div>
+
+    </div>
       <q-list >
         <div
           class="row q-col-gutter-sm  justify-center"
@@ -76,11 +86,12 @@
           <q-btn
             clickable
             initialiseStore
-            
+            style="width:100%; height:100%;"
             no-caps
           >
             <q-img src="statics/faceImg.png" :ratio="4 / 3" />
             <span>{{ allArrChild.name }}</span>
+            
           </q-btn>
           </div>
           <div class="q-mt-md col-4">

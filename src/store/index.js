@@ -33,8 +33,7 @@ export default function (/* { ssrContext } */) {
   
   Store.subscribe((mutation, state) => {
     // Store the state object as a JSON string
-    // localStorage.setItem('store1', localStorage.getItem("store"))
-    console.log(state.school.allChildren.length)
+
    
     if(state.school.allChildren.length  >= 1){
       // let store = {
@@ -42,7 +41,7 @@ export default function (/* { ssrContext } */) {
       //   currentChild : state.school.currentChild,
       //   version : state.school.version
       // };
-      localStorage.setItem('store', JSON.stringify(state.school))
+      localStorage.setItem('store', JSON.stringify(state))
     }
   //  let forsStored =  JSON.parse()
     
