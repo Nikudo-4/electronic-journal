@@ -212,6 +212,7 @@
           </q-item-section>
           <q-item-section>
             <q-item-label>Написать разработчикам</q-item-label>
+            <q-item-label caption>Разработано "Наска Луганск"</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>
@@ -234,7 +235,7 @@
               v-model="name"
               label="Введите имя"
               lazy-rules
-              :rules="[val => (val && val.length > 0) || 'Напишите Ваше имя']"
+              :rules="[val => (val && val.length > 3) || 'Обязательно 3 символа']"
             />
             <q-input
               filled
@@ -242,7 +243,7 @@
               label="Опишите проблему"
               lazy-rules
               :rules="[
-                val => (val && val.length > 0) || 'Это обязательное поле'
+                val => (val && val.length > 5) || 'Обязательно 6 символов'
               ]"
             />
             <div>

@@ -1,9 +1,13 @@
 <template>
   <div style="text-align:center">
-  <h3>Электронный журнал</h3>
+    <div class="q-pt-lg"> 
+      <h3 >Электронный журнал</h3>
+    </div>
     <div class="q-pb-mb">
-
-    <span >Школа № 30</span>
+      <div class="q-pb-lg">
+          <span>Школа № 30</span> 
+      </div>
+    <!-- <span >версия 2</span> -->
     </div>
     <div>
       <q-btn clicable @click="scan()" no-caps >Сканировать</q-btn>

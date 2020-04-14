@@ -4,19 +4,30 @@
       <tbody>
         <tr>
           <td></td>
-          <td v-for="(day, dayKey) in lessonsByDates" :key="dayKey">
-            {{ dateFormat(dayKey) }}
+          <td class="date_list" v-for="(day, dayKey) in lessonsByDates" :key="dayKey">
+            <!-- <div style="width: 60px; white-space: normal;">
+            </div> -->
+            <span style="text-transform: capitalize;">
+              {{ dateFormatDay(dayKey) }}
+            </span>
+             <br/> {{ dateFormat(dayKey) }}
           </td>
         </tr>
-        <tr v-for="(subject, index) in subjects" :key="index">
-          <td :style="subject.id % 2 === 0?'background: #F5F5F5;':'background: white;'">
+        <tr width="200" v-for="(subject, index) in subjects" :key="index">
+          <td  class="title_list"
+            :style="index % 2 === 0?'background: #F5F5F5;':'background: white;'">
+            <div  style=" word-break: normal;white-space: normal;width: 100px">
             {{ subject.title }}
+            </div>
           </td>
-          <td :style="subject.id % 2 === 0?'background: #F5F5F5;':'background: white;'" v-for="(day, k) in lessonsByDates" :key="k">
-            <div  v-for="lesson in day" :key="lesson.id">
+          <td width="200" :style="index % 2 === 0  ?'background: #F5F5F5;':'background: white;'"
+           v-for="(day, k) in lessonsByDates" :key="k">
+            <div   v-for="lesson in day" :key="lesson.id">
               <div  style="text-align:center;" v-if="lesson.subject_id == subject.id">
                 <div   style="text-align:center; display: inline" v-for="grade in lesson.grades" :key="grade.id">
-                  {{ grade.grade }} 
+                  <span >
+                  {{ grade.grade }}
+                  </span>
                 </div>
               </div>
               <div  style="text-align:center;" v-else>-</div>
@@ -59,20 +70,35 @@ export default {
     },
     ...mapActions(["giveSubjects", "giveGradesForMonth"]),
 
+    dateFormatDay(date) {
+      return moment(date)
+        .locale("ru")
+        .format("dddd");
+    },
     dateFormat(date) {
       return moment(date)
         .locale("ru")
-        .format("dddd D MMM");
+        .format("D MMM");
     }
   }
 };
 </script>
 
 <style>
-td {background: grey; }
-  td.col1 { background: grey;  }
-  td.col2 { background: white;  }
-  td.col3 { background: grey; }
+td.date_list{
+  /* width:150px; height:20px; */
+  overflow-wrap: normal;  /* не поддерживает IE, Firefox; является копией word-wrap */ 
+  word-wrap: normal;
+  word-break: normal;  /* не поддерживает Opera12.14, значение keep-all не поддерживается IE, Chrome */ 
+  hyphens: manual;
+}
+.title_list{
+  width:100px; height:20px;
+  overflow-wrap: normal;  /* не поддерживает IE, Firefox; является копией word-wrap */ 
+  word-wrap: normal;
+  word-break: normal;  /* не поддерживает Opera12.14, значение keep-all не поддерживается IE, Chrome */ 
+  hyphens: manual;
+}
 .list {
   height: 100% auto;
 }

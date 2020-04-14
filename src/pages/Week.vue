@@ -64,7 +64,7 @@
            >
            <div style="background: radial-gradient(circle, #8ecdec 0%, #4c4cd4 100%); 
               text-align:center;">
-           <span v-if="k">
+           <span v-if="k" style="text-transform: capitalize;">
            {{dateFormat(k)}}
            </span>
            </div>

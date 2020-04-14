@@ -69,8 +69,10 @@ export default {
     async giveGrades(ctx, uuid) {
         let date = ctx.state.date
         moment(date).locale("ru");
-        let from = moment(date).startOf("isoWeeks").format('YYYY-MM-DD');
+        let from = moment(date).isoWeekday(1)
+        .format("YYYY-MM-DD");
         let to = moment(date).isoWeekday(6).format('YYYY-MM-DD');
+        console.log(from+'__'+to)
       try {
         const res = await fetch(
           `http://193.228.162.185:9072/api/app/schoolchild/grades/${uuid}`,
