@@ -1,7 +1,7 @@
 <template>
   <div style="text-align:center">
     <div class="q-pt-lg"> 
-      <h3 >Электронный журнал</h3>
+      <h3 >Электронный дневник</h3>
     </div>
     <div class="q-pb-mb">
       <div class="q-pb-lg">
